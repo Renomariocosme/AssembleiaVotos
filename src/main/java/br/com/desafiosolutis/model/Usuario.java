@@ -1,7 +1,9 @@
 package br.com.desafiosolutis.model;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,13 +13,18 @@ import static br.com.desafiosolutis.model.EnumRole.USUARIO;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tbl_usuario")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Usuario {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@Column(name = "oid")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	@Column(name = "cpf_eleitor")
 	private String cpf;
+	@Column(name = "cpf")
 	private String nome;
 	@Column(unique = true)
 	private String email;
@@ -25,18 +32,21 @@ public class Usuario {
 	@Enumerated(EnumType.STRING)
 	private EnumRole tipo = USUARIO;
 
+	@Column(name = "oid_pauta")
+	private Integer oidPauta;
 
-	public Usuario(String cpf, String email, String nome) {
+
+	public Usuario(String cpf, String email, String nome ) {
 		this.cpf = cpf;
 		this.email = email;
 		this.nome = nome;
-	}	
-	
-	public Usuario() {
-		
 	}
 
 	public Usuario(String cpf, String nome) {
+	}
+
+	public static Object builder() {
+		return builder();
 	}
 
 	public Object getId() {
@@ -47,6 +57,10 @@ public class Usuario {
 	public String getEmail() {
 		
 		return email;
+	}
+	public String getCpf() {
+
+		return cpf;
 	}
 
 }

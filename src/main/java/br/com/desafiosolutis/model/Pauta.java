@@ -1,37 +1,37 @@
 package br.com.desafiosolutis.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
+@Data
+@Builder
 @Entity
-@Table(name = "tb_pauta")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "tbl_pauta")
 public class Pauta {
 
 	@Id
+	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
 	@NotNull
 	private String nomePauta;
-	@NotNull(message = "O campo descricao pode ser nulo")
+
 	@Column(name = "descricao")
 	private String descricao;
-	@Column(name = "data_votacao")
-	private LocalDateTime dataVotacao = LocalDateTime.now();
 
-	@Column(name = "hora_votacao")
-	private LocalDateTime horaVotacao = LocalDateTime.now();
-	
-	public Pauta() {
-		
-	}
-	
-	public Pauta(String nomePauta, String descricao, LocalDateTime dataVotacao) {
+
+	public Pauta(String nomePauta, String descricao) {
 		this.nomePauta = nomePauta;
 		this.descricao = descricao;
-		this.dataVotacao = dataVotacao;
-		this.horaVotacao = horaVotacao;
+
 	}
 	
 	public String getNomePauta() {
@@ -50,24 +50,9 @@ public class Pauta {
 		this.descricao = descricao;
 	}
 
-	public LocalDateTime getDataVotacao() {
-		return dataVotacao;
-	}
-
-	public void setDataVotacao(LocalDateTime dataVotacao) {
-		this.dataVotacao = dataVotacao;
-	}
-
 	public Long getId() {
 		
 		return id;
 	}
 
-
-	public LocalDateTime getHoraVotacao() {
-		return dataVotacao;
-	}
-	public LocalDateTime setHoraVotacao(){
-		return horaVotacao;
-	}
 }

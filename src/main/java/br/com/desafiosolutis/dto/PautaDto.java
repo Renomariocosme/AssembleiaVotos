@@ -5,28 +5,50 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.desafiosolutis.model.Pauta;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 
+@ApiModel(value = "PautaDto")
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PautaDto {
-	
+
+	@ApiModelProperty(value = "ID Pauta", required = true)
 	private Long id;
 	private String nomePauta;
+	@ApiModelProperty(value = "Descrição sobre o que será voltado")
+	@NotBlank(message = "Descrição deve ser preenchido")
 	private String descricao;
-	@Column(name = "data_votacao")
-	private LocalDateTime dataVotacao = LocalDateTime.now();
 
-	@Column(name = "hora_votacao")
-	private LocalDateTime horaVotacao = LocalDateTime.now();
+
+
+	public static Pauta toEntity(PautaDto pautaDto){
+		return Pauta.builder()
+				.id(pautaDto.getId())
+				.descricao(pautaDto.getDescricao())
+				.build();
+	}
+
+	public static PautaDto toDto(Pauta pauta) {
+		return PautaDto.builder()
+				.id(pauta.getId())
+				.descricao(pauta.getDescricao())
+				.build();
+
+	}
 
 	public PautaDto(Pauta pauta) {
-		this.id = pauta.getId();
-		this.nomePauta = pauta.getNomePauta();
-		this.descricao = pauta.getDescricao();
-		this.dataVotacao = pauta.getDataVotacao();
-		this.horaVotacao = pauta.getHoraVotacao();
+
 	}
-	
 	
 	public Long getId() {
 		return id;
@@ -45,20 +67,6 @@ public class PautaDto {
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-	public LocalDateTime getDataVotacao() {
-		return dataVotacao;
-	}
-	public void setDataVotacao(LocalDateTime dataVotacao) {
-		this.dataVotacao = dataVotacao;
-	}
-
-	public LocalDateTime getHoraVotacao() {
-		return horaVotacao;
-	}
-
-	public void setHoraVotacao(LocalDateTime horaVotacao) {
-		this.horaVotacao = horaVotacao;
 	}
 
 	public static List<PautaDto> converter(List<Pauta> pauta) {

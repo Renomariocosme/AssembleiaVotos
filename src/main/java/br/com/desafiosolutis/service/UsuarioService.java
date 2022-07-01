@@ -3,20 +3,28 @@ package br.com.desafiosolutis.service;
 import br.com.desafiosolutis.advice.Exception;
 import br.com.desafiosolutis.model.Usuario;
 import br.com.desafiosolutis.repository.UsuarioRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 
 @Service
 public class UsuarioService {
 
-  @Autowired
-  private UsuarioRepository repository;
 
-   public Usuario salvar(Usuario usuario){
+
+  @Autowired
+  private final UsuarioRepository repository;
+
+    public UsuarioService(UsuarioRepository repository) {
+        this.repository = repository;
+    }
+
+    public Usuario salvar(Usuario usuario){
 
        boolean existeEmail = false;
 

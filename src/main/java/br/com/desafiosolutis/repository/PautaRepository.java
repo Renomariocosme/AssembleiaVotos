@@ -11,4 +11,6 @@ public interface PautaRepository extends JpaRepository<Pauta, Long> {
 
 
 	List<Pauta> findByNomePauta(String nomePauta);
+
+	boolean existsById(Long id);
 }
