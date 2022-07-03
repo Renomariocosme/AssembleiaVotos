@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 @Data
@@ -20,7 +18,7 @@ public class Pauta {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;	
+	private Integer id;
 	@NotNull
 	private String nomePauta;
 
@@ -50,7 +48,7 @@ public class Pauta {
 		this.descricao = descricao;
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		
 		return id;
 	}

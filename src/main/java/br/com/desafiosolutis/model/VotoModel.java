@@ -28,9 +28,7 @@ public class VotoModel implements Serializable {
     @Column(name = "data")
     private LocalDateTime dataHora;
 
-    @ManyToOne
-    @JoinColumn(name = "id_sessao_model")
-    private SessaoModel sessaoModel;
+
 
 
 }

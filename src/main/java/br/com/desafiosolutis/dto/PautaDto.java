@@ -1,6 +1,5 @@
 package br.com.desafiosolutis.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 @ApiModel(value = "PautaDto")
@@ -23,7 +21,7 @@ import javax.validation.constraints.NotBlank;
 public class PautaDto {
 
 	@ApiModelProperty(value = "ID Pauta", required = true)
-	private Long id;
+	private Integer id;
 	private String nomePauta;
 	@ApiModelProperty(value = "Descrição sobre o que será voltado")
 	@NotBlank(message = "Descrição deve ser preenchido")
@@ -33,14 +31,14 @@ public class PautaDto {
 
 	public static Pauta toEntity(PautaDto pautaDto){
 		return Pauta.builder()
-				.id(pautaDto.getId())
+				.id((pautaDto.getId()))
 				.descricao(pautaDto.getDescricao())
 				.build();
 	}
 
 	public static PautaDto toDto(Pauta pauta) {
 		return PautaDto.builder()
-				.id(pauta.getId())
+				.id(Math.toIntExact(pauta.getId()))
 				.descricao(pauta.getDescricao())
 				.build();
 
@@ -50,11 +48,11 @@ public class PautaDto {
 
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 	public void setId(Long id) {
-		this.id = id;
+		this.id = Math.toIntExact(id);
 	}
 	public String getNomePauta() {
 		return nomePauta;
