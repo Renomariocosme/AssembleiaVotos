@@ -28,8 +28,6 @@ public class PautaController {
 
 	private final PautaService service;
 
-	@Autowired
-	private PautaRepository repository;
 
 	@Autowired
 	public PautaController(PautaService service) {
@@ -38,20 +36,19 @@ public class PautaController {
 
 	@ApiOperation(value ="Buscar a pauta utilizando o ID")
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<PautaDto> buscarPautaPeloOId(@PathVariable("id") Long id){
+	public ResponseEntity<PautaDto> buscarPautaPeloId(@PathVariable("id") Integer id){
 		LOGGER.debug("Buscando a pauta pelo o ID = {id}", id);
 		return ResponseEntity.ok(service.buscarPautaPeloId(id));
 
 
 	}
-	@ApiOperation(value ="Cricar uma pauta para ser votada")
+	@ApiOperation(value ="Criar uma pauta para ser votada")
 	@PostMapping
 	public ResponseEntity<PautaDto> salvarPauta(@Valid @RequestBody PautaDto pautaDto){
 		LOGGER.debug("Salvando a pauta = {id}", pautaDto.getDescricao());
 		pautaDto = service.salvar(pautaDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(pautaDto);
 	}
-
 
 
 }

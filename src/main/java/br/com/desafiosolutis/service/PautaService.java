@@ -32,8 +32,8 @@ public class PautaService {
     }
 
 
-    public PautaDto buscarPautaPeloId(Long id){
-        Optional<Pauta> pautaOptional = repository.findById(id);
+    public PautaDto buscarPautaPeloId(Integer id){
+        Optional<Pauta>  pautaOptional = repository.findById(id);
 
         if (!pautaOptional.isPresent()){
             LOGGER.error("Pauta não localize para o id {}", id);
@@ -43,7 +43,7 @@ public class PautaService {
         return PautaDto.toDto(pautaOptional.get());
     }
 
-    public boolean isPautaValida(Long id){
+    public boolean isPautaValida(Integer id){
         if(repository.existsById(id)){
             return Boolean.TRUE;
         }else{

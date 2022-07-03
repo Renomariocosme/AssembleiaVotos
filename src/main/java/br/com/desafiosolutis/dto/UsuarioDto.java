@@ -1,90 +1,52 @@
 package br.com.desafiosolutis.dto;
 
 
-import br.com.desafiosolutis.model.EnumRole;
 import br.com.desafiosolutis.model.Usuario;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
 @ApiModel(value = "UsuarioDto")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class UsuarioDto {
 
-    private Long id;
+    private Integer id;
 
-    @ApiModelProperty(value = "CPF precisa ser válido")
-    @CPF(message = "Não é um CPF existante")
-    @NotBlank(message = "CPF do associado deve ser preenchido")
-    private String CPF;
+    @ApiModelProperty(value = "CPF válido referente ao usuario")
+    @CPF(message = "Não é um CPF valido")
+    @NotBlank(message = "CPF do usuario deve ser preenchido")
+    private String cpfUsuario;
+
     private String email;
+
+    @NotBlank(message = "Nome do usuario deve ser preenchido")
     private String nome;
 
     @ApiModelProperty(value = "ID da pauta a ser votada")
-    @NotNull(message = "oidPauta deve ser preenchido")
-    private Integer oidPauta;
+    @NotNull(message = "idPauta deve ser preenchido")
+    private Integer idPauta;
 
-    @Enumerated(EnumType.STRING)
-    private EnumRole tipo = EnumRole.USUARIO;
+    public UsuarioDto(Object o, String cpfUsuario, Integer idPauta) {
+    }
 
 
-    public static UsuarioDto toEntity(Usuario usuario){
-        return UsuarioDto.builder()
-                .id((Long) usuario.getId())
-                .CPF(usuario.getCpf())
-                .oidPauta(usuario.getOidPauta())
+    public static Usuario toEntity(UsuarioDto dto){
+        return Usuario.builder()
+                .id(dto.getId())
+                .cpfUsuario(dto.getCpfUsuario())
+                .idPauta(dto.getIdPauta())
                 .build();
-    }
 
-    private static String getCpf() {
-        return getCpf();
-    }
-
-
-    public UsuarioDto(Usuario usuarioDto){
-        this.id = id;
-        this.CPF = CPF;
-        this.email = email;
-        this.nome = nome;
-
-
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getCPF() {
-        return CPF;
-    }
-
-    public void setCPF(String CPF) {
-        this.CPF = CPF;
     }
 
 

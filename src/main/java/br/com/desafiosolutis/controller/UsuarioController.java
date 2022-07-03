@@ -32,7 +32,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id){
+    public ResponseEntity<Usuario> buscarPorId(@PathVariable Integer id){
         Optional<Usuario> usuario = service.buscarPorId(id);
 
         if(usuario.isEmpty()){
@@ -56,7 +56,7 @@ public class UsuarioController {
 
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
        service.deletar(id);
        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

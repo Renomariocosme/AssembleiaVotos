@@ -22,10 +22,13 @@ public class PautaDto {
 
 	@ApiModelProperty(value = "ID Pauta", required = true)
 	private Integer id;
+
 	private String nomePauta;
+
 	@ApiModelProperty(value = "Descrição sobre o que será voltado")
 	@NotBlank(message = "Descrição deve ser preenchido")
 	private String descricao;
+
 
 
 
@@ -46,25 +49,6 @@ public class PautaDto {
 
 	public PautaDto(Pauta pauta) {
 
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = Math.toIntExact(id);
-	}
-	public String getNomePauta() {
-		return nomePauta;
-	}
-	public void setNomePauta(String nomePauta) {
-		this.nomePauta = nomePauta;
-	}
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public static List<PautaDto> converter(List<Pauta> pauta) {

@@ -63,7 +63,7 @@ public class SessaoVotacaoService {
      */
 
     public boolean isValidaAbrirSessao(SessaoVotacaoAbrirDTO sessaoVotacaoAbrirDTO){
-        if (pautaService.isPautaValida(sessaoVotacaoAbrirDTO.getIdPauta().longValue())){
+        if (pautaService.isPautaValida((int) sessaoVotacaoAbrirDTO.getIdPauta().longValue())){
             return Boolean.TRUE;
         } else {
             throw new NotFoundException("Pauta não localizada pelo ID" + sessaoVotacaoAbrirDTO.getIdPauta());

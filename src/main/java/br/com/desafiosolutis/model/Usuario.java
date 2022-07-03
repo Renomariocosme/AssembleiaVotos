@@ -1,17 +1,14 @@
 package br.com.desafiosolutis.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 import static br.com.desafiosolutis.model.EnumRole.USUARIO;
 
-@Getter
-@Setter
+@Data
+@Builder
 @Entity
 @Table(name = "tbl_usuario")
 @AllArgsConstructor
@@ -19,48 +16,21 @@ import static br.com.desafiosolutis.model.EnumRole.USUARIO;
 public class Usuario {
 
 	@Id
-	@Column(name = "oid")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(name = "cpf_eleitor")
-	private String cpf;
-	@Column(name = "cpf")
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+
+	@Column(name = "cpf_usuario")
+	private String cpfUsuario;
+
+	@Column(name = "nome_usuario")
 	private String nome;
+
 	@Column(unique = true)
 	private String email;
 
-	@Enumerated(EnumType.STRING)
-	private EnumRole tipo = USUARIO;
+	@Column(name = "id_pauta")
+	private Integer idPauta;
 
-	@Column(name = "oid_pauta")
-	private Integer oidPauta;
-
-
-	public Usuario(String cpf, String email, String nome ) {
-		this.cpf = cpf;
-		this.email = email;
-		this.nome = nome;
-	}
-
-	public Usuario(String cpf, String nome) {
-	}
-
-	public static Object builder() {
-		return builder();
-	}
-
-	public Object getId() {
-
-		return id;
-	}
-
-	public String getEmail() {
-		
-		return email;
-	}
-	public String getCpf() {
-
-		return cpf;
-	}
 
 }
