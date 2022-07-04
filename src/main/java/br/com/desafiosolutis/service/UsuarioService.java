@@ -48,7 +48,7 @@ public class UsuarioService {
      */
 
     public void salvarUsuario(UsuarioDto dto){
-        LOGGER.debug("Registrando particapacao do usuario na votacao idUsuario = {} , idPauta = {}", dto.getCpfUsuario(), dto.getCpfUsuario());
+        LOGGER.debug("Registrando particapacao do usuario na votacao idUsuario = {} , idPauta = {}", dto.getCpfUsuario(), dto.getIdPauta());
         repository.save(UsuarioDto.toEntity(dto));
     }
 

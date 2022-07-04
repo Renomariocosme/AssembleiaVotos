@@ -43,7 +43,6 @@ public class UsuarioController {
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<Usuario> cadastrar(@Valid @RequestBody Usuario usuario){
         Usuario salvarUsuario = service.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvarUsuario);

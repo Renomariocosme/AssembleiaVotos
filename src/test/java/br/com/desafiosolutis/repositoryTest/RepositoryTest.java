@@ -26,11 +26,11 @@ public class RepositoryTest {
 
 
     @BeforeAll
-    void start(){
+  /*  void start(){
         repository.save(new Usuario("12015212303","eduardocampos@gmail.com","Pedro José"));
 
     }
-
+*/
     @Test
     @DisplayName("Retorna um e-mail")
     void deveRetornaUmEmail(){

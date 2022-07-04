@@ -17,7 +17,7 @@ public class Votacao {
 
 
     @Id
-    @Column(name = "oid")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 

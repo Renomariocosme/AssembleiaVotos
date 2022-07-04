@@ -21,7 +21,7 @@ public class CronometroComponent {
         this.sessaoVotacaoService = sessaoVotacaoService;
     }
 
-    @Scheduled(cron = "15 * * * *")
+    @Scheduled(cron = "15 * * * * *")
     private void teste(){
         LOGGER.debug("Contador de tempo sendo executado...");
         List<SessaoVotacaoDTO> list = sessaoVotacaoService.buscarSessoesEmAndamento();

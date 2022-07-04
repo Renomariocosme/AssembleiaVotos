@@ -3,9 +3,7 @@ package br.com.desafiosolutis.service;
 import br.com.desafiosolutis.advice.NotFoundException;
 import br.com.desafiosolutis.advice.SessaoEncerradaException;
 import br.com.desafiosolutis.advice.VotoInvalidoException;
-import br.com.desafiosolutis.dto.UsuarioDto;
-import br.com.desafiosolutis.dto.VotacaoDTO;
-import br.com.desafiosolutis.dto.VotoDTO;
+import br.com.desafiosolutis.dto.*;
 import br.com.desafiosolutis.repository.VotacaoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,5 +105,55 @@ public class VotacaoService {
         repository.save(VotacaoDTO.toEntity(dto));
     }
 
+    /**
+     * Realiza a busca e contagem dos votos positivos e negativos para determinada sessao e pauta de votacao.
+     *
+     * @param idPauta         - @{@link br.com.desafiosolutis.model.Pauta} ID
+     * @param idSessaoVotacao - @{@link br.com.desafiosolutis.model.SessaoVotacao} ID
+     * @return - @{@link VotacaoDTO}
+     */
 
+    public VotacaoDTO buscarResultadoVotacao(Integer idPauta, Integer idSessaoVotacao){
+        LOGGER.debug("Contabilizando os votos para idPauta = {}, idSessaoVotacao = {}", idPauta, idSessaoVotacao);
+        VotacaoDTO dto = new VotacaoDTO();
+
+        dto.setIdPauta(idPauta);
+        dto.setIdSessaoVotacao(idSessaoVotacao);
+
+        dto.setQuantidadeVotosSim(repository.countVotacaoByIdPautaAndIdSessaoVotacaoAndVoto(idPauta,idSessaoVotacao, Boolean.TRUE));
+        dto.setQuantidadeVotosNao(repository.countVotacaoByIdPautaAndIdSessaoVotacaoAndVoto(idPauta, idSessaoVotacao, Boolean.FALSE));
+
+        return dto;
+    }
+    /**
+     * Realiza a montagem dos objetos referente ao resultado de determinada sessao e pauta de votacao.
+     * <p>
+     * Contagem somente e realizada apos a finalizacao da sessao.
+     *
+     * @param idPauta         - @{@link br.com.desafiosolutis.model.Pauta} ID
+     * @param idSessaoVotacao - @{@link br.com.desafiosolutis.model.SessaoVotacao} ID
+     * @return - @{@link ResultadoDTO
+     *
+     */
+
+    public ResultadoDTO buscarDadosResultadoVotacao(Integer idPauta, Integer idSessaoVotacao){
+
+        if (isValidaSeDadosExiste(idPauta, idSessaoVotacao) && sessaoVotacaoService.isSessaoValidaParaContagem(idSessaoVotacao)){
+            LOGGER.debug("Construindo o objeto de retorno do resultado para idPauta = {}, idSessaoVotacao = {}", idPauta, idSessaoVotacao);
+            PautaDto pautaDto = pautaService.buscarPautaPeloId(idPauta);
+            VotacaoDTO votacaoDTO = buscarResultadoVotacao(idPauta, idSessaoVotacao);
+            return new ResultadoDTO(pautaDto, votacaoDTO);
+        }
+        throw new NotFoundException("Sessao de votação ainda está aberta, não é possivel obter o resultado a contagem do resultado");
+    }
+
+    /**
+     * @param idPauta         - @{@link br.com.desafiosolutis.model.Pauta} ID
+     * @param idSessaoVotacao - @{@link br.com.desafiosolutis.model.SessaoVotacao} ID
+     * @return - boolean
+     */
+
+    public boolean isValidaSeDadosExiste(Integer idPauta, Integer idSessaoVotacao){
+        return sessaoVotacaoService.isSessaoVotacaoExiste(idSessaoVotacao) && pautaService.isPautaValida(idPauta);
+    }
 }
