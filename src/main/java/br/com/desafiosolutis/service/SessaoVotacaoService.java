@@ -2,6 +2,7 @@ package br.com.desafiosolutis.service;
 
 import br.com.desafiosolutis.advice.NotFoundException;
 import br.com.desafiosolutis.dto.PautaDto;
+import br.com.desafiosolutis.dto.PautaRespostaDTO;
 import br.com.desafiosolutis.dto.SessaoVotacaoAbrirDTO;
 import br.com.desafiosolutis.dto.VotacaoRequisicaoDTO;
 import br.com.desafiosolutis.model.Pauta;
@@ -178,6 +179,7 @@ public class SessaoVotacaoService {
             pautaService.Percentual(v.getPauta());
             pautaService.calcularVencedor(v.getPauta());
             pautaRepository.save(v.getPauta());
+            PautaRespostaDTO pautaRespostaDTO = PautaRespostaDTO.converteParaDto(v.getPauta());
         });
     }
 
