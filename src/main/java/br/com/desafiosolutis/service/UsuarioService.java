@@ -1,12 +1,13 @@
 package br.com.desafiosolutis.service;
 
-import br.com.desafiosolutis.advice.Exception;
+import br.com.desafiosolutis.config.ValidarCpf;
 import br.com.desafiosolutis.dto.UsuarioDto;
 import br.com.desafiosolutis.model.Usuario;
 import br.com.desafiosolutis.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,35 +21,26 @@ public class UsuarioService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioService.class);
     private final UsuarioRepository repository;
 
+    private final ValidarCpf validarCpf;
+
 
     @Autowired
-    public UsuarioService(UsuarioRepository repository){
+    public UsuarioService(UsuarioRepository repository, ValidarCpf validarCpf){
         this.repository = repository;
+        this.validarCpf = validarCpf;
     }
 
-    /**
-     * Realiza a validacao se o associado ja votou na pauta informada pelo seu ID.
-     * <p>
-     * Se nao existir um registro na base, entao e considerado como valido para seu voto ser computado
-     *
-     * @param cpfUsuario @{@link br.com.desafiosolutis.model.Usuario} CPF Valido
-     * @param idPauta     @{@link br.com.desafiosolutis.model.Pauta} ID
-     * @return - boolean
-     */
 
     public boolean isValidaParticipacaoUsuarioVotacao(String cpfUsuario, Integer idPauta){
         LOGGER.debug("Validando participação do associado na votacao da pauta id = {}", idPauta);
-        if (repository.existsByCpfUsuarioAndIdPauta(cpfUsuario, idPauta)){
+        if (repository.existsByCpfUsuario(cpfUsuario)){
             return Boolean.FALSE;
         }
         return Boolean.TRUE;
     }
-    /**
-    * @param dto @{@link br.com.desafiosolutis.dto.UsuarioDto}
-     */
 
     public void salvarUsuario(UsuarioDto dto){
-        LOGGER.debug("Registrando particapacao do usuario na votacao idUsuario = {} , idPauta = {}", dto.getCpfUsuario(), dto.getIdPauta());
+        LOGGER.debug("Registrando particapacao do usuario na votacao idUsuario = {} , idPauta = {}", dto.getCpfUsuario());
         repository.save(UsuarioDto.toEntity(dto));
     }
 
@@ -68,4 +60,17 @@ public class UsuarioService {
     public Usuario salvar(Usuario usuario){
         return repository.save(usuario);
     }
+
+    public Usuario getByCpf(String cpfUsuario){
+        return repository.findByCpfUsuario(cpfUsuario).orElse(null);
+    }
+
+    private String encryptPassword(String senha){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(senha);
+    }
+
+
 }
+
+

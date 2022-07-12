@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.desafiosolutis.model.Pauta;
+import br.com.desafiosolutis.model.enumereted.StatusEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 
 @ApiModel(value = "PautaDto")
@@ -29,13 +32,18 @@ public class PautaDto {
 	@NotBlank(message = "Descrição deve ser preenchido")
 	private String descricao;
 
+	@Enumerated
+	public StatusEnum status;
 
+	@Column(name = "vencedor")
+	private String vencedor;
 
 
 	public static Pauta toEntity(PautaDto pautaDto){
 		return Pauta.builder()
 				.id((pautaDto.getId()))
 				.descricao(pautaDto.getDescricao())
+				.nomePauta(pautaDto.getNomePauta())
 				.build();
 	}
 
@@ -43,17 +51,20 @@ public class PautaDto {
 		return PautaDto.builder()
 				.id(Math.toIntExact(pauta.getId()))
 				.descricao(pauta.getDescricao())
+				.nomePauta(pauta.getNomePauta())
 				.build();
 
 	}
 
-	public PautaDto(Pauta pauta) {
+	public  PautaDto(Pauta pauta) {
 
 	}
 
 	public static List<PautaDto> converter(List<Pauta> pauta) {
 		return pauta.stream().map(PautaDto :: new).collect(Collectors.toList());
 	}
-	
+
+
+
 	
 }

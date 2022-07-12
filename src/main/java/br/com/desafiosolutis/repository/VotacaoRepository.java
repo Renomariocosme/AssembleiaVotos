@@ -1,9 +1,11 @@
 package br.com.desafiosolutis.repository;
 
-import br.com.desafiosolutis.model.Votacao;
+import br.com.desafiosolutis.model.Voto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface VotacaoRepository extends JpaRepository<Votacao, Integer> {
+@Repository
+public interface VotacaoRepository extends JpaRepository<Voto, Integer> {
 
-    Integer countVotacaoByIdPautaAndIdSessaoVotacaoAndVoto(Integer idPauta, Integer idSessaoVotacao, Boolean voto);
+
 }

@@ -2,6 +2,7 @@ package br.com.desafiosolutis.dto;
 
 
 import br.com.desafiosolutis.model.Usuario;
+import br.com.desafiosolutis.model.enumereted.EnumRole;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,7 @@ public class UsuarioDto {
     @NotBlank(message = "Nome do usuario deve ser preenchido")
     private String nome;
 
-    @ApiModelProperty(value = "ID da pauta a ser votada")
-    @NotNull(message = "idPauta deve ser preenchido")
-    private Integer idPauta;
+    private EnumRole tipo;
 
     public UsuarioDto(Object o, String cpfUsuario, Integer idPauta) {
     }
@@ -44,7 +43,6 @@ public class UsuarioDto {
         return Usuario.builder()
                 .id(dto.getId())
                 .cpfUsuario(dto.getCpfUsuario())
-                .idPauta(dto.getIdPauta())
                 .build();
 
     }

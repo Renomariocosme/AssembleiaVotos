@@ -1,4 +1,4 @@
-package br.com.desafiosolutis.model;
+package br.com.desafiosolutis.model.enumereted;
 
 public enum EnumRole {
 

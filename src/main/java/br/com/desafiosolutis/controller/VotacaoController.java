@@ -2,6 +2,8 @@ package br.com.desafiosolutis.controller;
 
 import br.com.desafiosolutis.dto.ResultadoDTO;
 import br.com.desafiosolutis.dto.VotoDTO;
+import br.com.desafiosolutis.dto.VotoRespostaDTO;
+import br.com.desafiosolutis.model.Voto;
 import br.com.desafiosolutis.service.VotacaoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,18 +32,11 @@ public class VotacaoController {
 
     @ApiOperation(value = "Votar em determinada pauta, enquanto a sessão de votação estiver aberta")
     @PostMapping(value = "/votar")
-    public ResponseEntity<String> votar(@Valid @RequestBody VotoDTO dto){
-        LOGGER.debug("Usuario votando usuario = {}", dto.getCpfUsuario());
-        String mensagem = service.votar(dto);
-        LOGGER.debug("Voto usuario finalizado usuario = {}", dto.getCpfUsuario());
-        return ResponseEntity.status(HttpStatus.CREATED).body(mensagem);
+    public ResponseEntity<Voto> votar(@Valid @RequestBody VotoRespostaDTO dto){
+        LOGGER.info("Usuario votando usuario = {}", dto.getCpfUsuario());
+
+        LOGGER.info("Voto usuario finalizado usuario = {}", dto.getCpfUsuario());
+        return  new  ResponseEntity<>(service.votando(dto), HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Resultado da votacao, somente após a finalização da sessao de votação")
-    @GetMapping(value = "/resultado/{idPauta}/{idSessaoVotacao}")
-    public ResponseEntity<ResultadoDTO> resultadoVotocao(@PathVariable("idPauta") Integer idPauta, @PathVariable ("idSessaoVotacao") Integer idSessaoVotacao){
-        LOGGER.debug("Buscando resultado da votacao idPauta = {}. idSessaoVotacao = {}", idPauta, idSessaoVotacao);
-        ResultadoDTO dto = service.buscarDadosResultadoVotacao(idPauta, idSessaoVotacao);
-        return ResponseEntity.status(HttpStatus.OK).body(dto);
-    }
 }

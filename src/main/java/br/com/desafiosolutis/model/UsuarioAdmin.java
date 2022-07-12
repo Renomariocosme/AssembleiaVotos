@@ -1,6 +1,8 @@
 package br.com.desafiosolutis.model;
 
 
+import br.com.desafiosolutis.model.enumereted.EnumRole;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 

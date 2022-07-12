@@ -1,5 +1,6 @@
 package br.com.desafiosolutis.dto;
 
+import br.com.desafiosolutis.model.enumereted.VotoOpcao;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.br.CPF;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -24,12 +27,10 @@ public class VotoDTO {
     @NotNull(message = "idSessaoVotacao deve ser preenchido")
     private Integer idSessaoVotacao;
 
-    @ApiModelProperty(value = "Voto")
-    @NotNull(message = "Voto deve ser preenchido")
-    private Boolean voto;
+    @Enumerated(EnumType.STRING)
+    private VotoOpcao votoOpcao;
 
     @ApiModelProperty(value = "CPF valido do eleitor")
-    @CPF(message = "Não é um CPF valido")
     @NotBlank(message = "cpf do usuario deve ser preenchido")
     private String cpfUsuario;
 }

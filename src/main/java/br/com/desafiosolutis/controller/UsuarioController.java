@@ -1,12 +1,22 @@
 package br.com.desafiosolutis.controller;
 
+import br.com.desafiosolutis.dto.TokenDTO;
+import br.com.desafiosolutis.dto.UserLoginDTO;
 import br.com.desafiosolutis.model.Usuario;
 import br.com.desafiosolutis.repository.UsuarioRepository;
+import br.com.desafiosolutis.security.TokenService;
 import br.com.desafiosolutis.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -17,13 +27,19 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/api/v1/usuario")
 public class UsuarioController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsuarioController.class);
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     private final UsuarioService service;
+
+    private TokenService tokenService;
+
+    private AuthenticationManager authenticationManager;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> listarTodos(){
@@ -44,6 +60,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> cadastrar(@Valid @RequestBody Usuario usuario){
+        LOGGER.info("Cadastrando o usuario no banco de dados" + buscarPorId(usuario.getId()));
         Usuario salvarUsuario = service.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvarUsuario);
     }
@@ -59,5 +76,22 @@ public class UsuarioController {
        service.deletar(id);
        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenDTO> login(@RequestBody @Valid UserLoginDTO dto){
+        LOGGER.info("Logando o usuario = {}", dto.getEmail());
+        UsernamePasswordAuthenticationToken data = dto.converter();
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(data);
+            String token = tokenService.gerarToken(authentication);
+            return ResponseEntity.ok(new TokenDTO(token, "Bearer" ));
+
+        }catch (AuthenticationException e){
+
+        }
+        return ResponseEntity.badRequest().build();
+        }
 
 }
