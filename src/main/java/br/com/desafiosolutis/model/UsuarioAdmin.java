@@ -16,7 +16,7 @@ public class UsuarioAdmin {
 	private	String token;
 
 	@Enumerated(EnumType.STRING)
-	private EnumRole tipo = EnumRole.ADMIN;
+	private EnumRole tipo = EnumRole.ROLE_ADMIN;
 
 	public String getUsuario() {
 		return usuario;

@@ -54,8 +54,8 @@ public class SecurityConfigurations  {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/v1/votacoes/votar").permitAll()
-                .antMatchers(HttpMethod.POST,"/v1/auth/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/api/v1/usuario").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/v1/usuario/criar").permitAll()
                 .antMatchers("swagger-ui.html").permitAll()
                 .antMatchers("/api/v1/**").hasRole(ROLE_ADMIN)
                 .anyRequest().authenticated().and().csrf().disable()

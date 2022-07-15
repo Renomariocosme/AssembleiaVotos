@@ -164,7 +164,7 @@ public class SessaoVotacaoService {
 
     }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 6000)
     public void sessaoFechada(){
 
        List<SessaoVotacao> votacaoList = todasVotacoesExpiradas();

@@ -7,8 +7,10 @@ import br.com.desafiosolutis.repository.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,10 +67,28 @@ public class UsuarioService {
         return repository.findByCpfUsuario(cpfUsuario).orElse(null);
     }
 
-    private String encryptPassword(String senha){
+    private String encryptPassword(String password){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(senha);
+        return encoder.encode(password);
     }
+
+
+    public Optional<Usuario> criarUsuario(Usuario usuario){
+        if (repository.findByCpfUsuario(usuario.getCpfUsuario()).isPresent()){
+           LOGGER.error("CPF já cadastrado = {}", usuario.getCpfUsuario());
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"CPF JÁ CADASTRADO!");
+        }
+        if (repository.findByEmail(usuario.getEmail()).isPresent()){
+            LOGGER.error("Email já cadastrado = {}", usuario.getEmail());
+        }
+        usuario.setSenha(encryptPassword(usuario.getSenha()));
+        LOGGER.info("SALVANDO USUARIO");
+        return Optional.of(repository.save(usuario));
+    }
+
+
+
+
 
 
 }

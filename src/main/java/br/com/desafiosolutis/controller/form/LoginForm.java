@@ -1,7 +1,13 @@
 package br.com.desafiosolutis.controller.form;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginForm {
 
     private String email;
@@ -10,4 +16,6 @@ public class LoginForm {
     public UsernamePasswordAuthenticationToken converter(){
         return new UsernamePasswordAuthenticationToken(email, senha);
     }
+
+
 }

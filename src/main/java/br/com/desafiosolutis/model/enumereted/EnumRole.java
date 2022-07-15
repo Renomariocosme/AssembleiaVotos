@@ -1,7 +1,16 @@
 package br.com.desafiosolutis.model.enumereted;
 
-public enum EnumRole {
+import org.springframework.security.core.GrantedAuthority;
 
-    USUARIO,
-    ADMIN;
+public enum EnumRole implements GrantedAuthority {
+
+     ROLE_ADMIN,
+     ROLE_COOPERADO;
+
+
+
+    @Override
+    public String getAuthority() {
+        return null;
+    }
 }

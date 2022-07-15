@@ -77,21 +77,12 @@ public class UsuarioController {
        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PostMapping("/criar")
+    public ResponseEntity<Usuario> criar(@Valid @RequestBody Usuario usuario){
+        LOGGER.info("CRIANDO USUÁRIO");
+        return new ResponseEntity(service.criarUsuario(usuario), HttpStatus.CREATED);
+    }
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody @Valid UserLoginDTO dto){
-        LOGGER.info("Logando o usuario = {}", dto.getEmail());
-        UsernamePasswordAuthenticationToken data = dto.converter();
-
-        try {
-            Authentication authentication = authenticationManager.authenticate(data);
-            String token = tokenService.gerarToken(authentication);
-            return ResponseEntity.ok(new TokenDTO(token, "Bearer" ));
-
-        }catch (AuthenticationException e){
-
-        }
-        return ResponseEntity.badRequest().build();
-        }
+        
 
 }
